@@ -1,0 +1,1 @@
+2020-08-04 08:41:00.296 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.kael.hr.mapper]' package. Please check your configuration.

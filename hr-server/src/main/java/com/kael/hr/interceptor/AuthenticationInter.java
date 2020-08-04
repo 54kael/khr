@@ -18,6 +18,11 @@ import java.util.List;
 public class AuthenticationInter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+        // options请求不会携带请求头‘Authorization’,直接放行
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
+        }
+
         String requestUrl = request.getRequestURI();
         log.info("访问路径:{}",requestUrl);
 
@@ -25,9 +30,6 @@ public class AuthenticationInter implements HandlerInterceptor {
         Claims claims;
 
         String authHeader = request.getHeader("Authorization");
-        if (request.getMethod().equals("OPTIONS")) {
-            return true;
-        }
 
         if (authHeader==null) {
             log.info("请求头为空");
@@ -42,6 +44,9 @@ public class AuthenticationInter implements HandlerInterceptor {
             String username = claims.getSubject();
             // 从token中得到用户的访问权限列表
             List<String> hrUrls =(List<String>) claims.get("urls");
+            // 添加两个只需要登录就可访问的路径
+            hrUrls.add("/menu/**");
+            hrUrls.add("/hr/info/**");
             // 匹配用户的访问权限
             AntPathMatcher antPathMatcher = new AntPathMatcher();
             for (String hrUrl : hrUrls) {

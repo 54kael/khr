@@ -1,5 +1,7 @@
 package com.kael.hr.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Hr {
@@ -13,16 +15,19 @@ public class Hr {
 
     private String address;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enabled;
 
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String userFace;
 
     private String remark;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Role> roles;
 
     public Integer getId() {

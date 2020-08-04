@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kael.hr.mapper.HrMapper">
+    <resultMap id="hrMap" type="com.kael.hr.entity.Hr">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="telephone" property="telephone" />
+        <result column="address" property="address" />
+        <result column="enabled" property="enabled" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="user_face" property="userFace" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <select id="findPasswordByUsername" resultType="string">
+        select
+            password
+        from
+            hr
+        where
+            enabled=1
+        and
+            username=#{username}
+    </select>
+
+    <select id="findHrByUsername" resultMap="hrMap">
+        select
+            id,name,phone,telephone,address,username,user_face
+        from
+            hr
+        where
+            enabled=1
+        and
+            username=#{username}
+    </select>
+
+</mapper>

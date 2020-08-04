@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kael.hr.mapper.RoleMapper">
+    <resultMap id="roleMap" type="com.kael.hr.entity.Role">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="name_zh" property="nameZh" />
+    </resultMap>
+
+    <select id="findRolesByUsername" resultMap="roleMap">
+        SELECT
+            role.*
+        FROM
+            hr
+                inner join
+            hr_role ON hr.id = hr_role.hr_id
+                left join
+            role on hr_role.role_id = role.id
+        WHERE
+            hr.username = #{username};
+    </select>
+</mapper>

@@ -1,5 +1,7 @@
 package com.kael.hr.entity;
 
+import java.util.List;
+
 public class Menu {
     private Integer id;
     private String url;
@@ -11,6 +13,15 @@ public class Menu {
     private Byte requireAuth;
     private Integer parentId;
     private Byte enabled;
+    private List<Menu> children;
+
+    public List<Menu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Menu> children) {
+        this.children = children;
+    }
 
     public Integer getId() {
         return id;
