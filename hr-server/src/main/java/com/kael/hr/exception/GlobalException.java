@@ -22,7 +22,7 @@ public class GlobalException {
     public Result hrHandle(HrException e) {
         e.printStackTrace();
         log.error("{}",e.getMessage());
-        return Result.failure(e.getStatue());
+        return Result.failure(e.getMessage());
     }
 
     /**
@@ -60,7 +60,7 @@ public class GlobalException {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
     public Result otherHandle(Exception e) {
-        log.error("其他异常");
+        log.error(e.getMessage());
         e.printStackTrace();
         return Result.failure("未知异常");
     }

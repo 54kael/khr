@@ -10,20 +10,15 @@ public class Result {
     private String code;
     private String message;
     private Map<String,Object> data;
-    private Result(Statue statue){
-        this.setCode(statue.getCode());
-        this.setMessage(statue.getMessage());
-    }
-
-    public Result(String message) {
-        this.message = message;
-    }
 
     /**
      * 操作成功，不需要返回数据
      */
     public static Result ok() {
-        return new Result(Statue.SUCCESS);
+        Result result = new Result();
+        result.setCode(Statue.SUCCESS.getCode());
+        result.setMessage(Statue.SUCCESS.getMessage());
+        return result;
     }
 
     /**
@@ -47,25 +42,18 @@ public class Result {
         return this;
     }
 
-    /**
-     * 操作失败
-     * @param message 失败原因
-     */
-    public static Result failure(String message) {
-        Result result = new Result(message);
-        result.setCode(Statue.FAILED.getCode());
+    public static  Result failure(String message) {
+        Result result = new Result();
+        result.setCode("50000");
+        result.setMessage(message);
         return result;
-    }
-
-    public static Result failure(Statue statue) {
-        return new Result(statue);
     }
 
     public String getCode() {
         return code;
     }
 
-    private void setCode(String code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -73,7 +61,7 @@ public class Result {
         return message;
     }
 
-    private void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -81,7 +69,7 @@ public class Result {
         return data;
     }
 
-    private void setData(Map<String, Object> data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 }

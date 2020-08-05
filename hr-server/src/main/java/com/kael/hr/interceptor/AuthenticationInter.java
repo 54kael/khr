@@ -2,7 +2,6 @@ package com.kael.hr.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kael.hr.responst.Result;
-import com.kael.hr.responst.Statue;
 import com.kael.hr.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +32,12 @@ public class AuthenticationInter implements HandlerInterceptor {
 
         if (authHeader==null) {
             log.info("请求头为空");
-            return result(response,Statue.UNAUTHORIZED);
+            return result(response,HttpServletResponse.SC_UNAUTHORIZED);
         } else {
             claims = JwtUtil.parseJwt(authHeader);
             if (claims==null) {
                 log.warn("**token解析失败**");
-                return result(response,Statue.UNAUTHORIZED);
+                return result(response, HttpServletResponse.SC_UNAUTHORIZED);
             }
 
             String username = claims.getSubject();
@@ -58,7 +57,7 @@ public class AuthenticationInter implements HandlerInterceptor {
             }
             // 权限匹配失败
             log.warn("'{}'访问'{}'权限不足",username,requestUrl);
-            return result(response,Statue.FORBIDDEN);
+            return result(response,HttpServletResponse.SC_FORBIDDEN);
         }
     }
 
@@ -67,29 +66,28 @@ public class AuthenticationInter implements HandlerInterceptor {
      * @param response 返回json数据
      * @param statue 状态
      */
-    private boolean result(HttpServletResponse response,Statue statue) {
-        // 未登录
-        if (statue.getCode().equals(Statue.UNAUTHORIZED.getCode())) {
-            statue=Statue.UNAUTHORIZED;
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-
-        // 未授权
-        if (statue.getCode().equals(Statue.FORBIDDEN.getCode())) {
-            statue=Statue.FORBIDDEN;
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
+    private boolean result(HttpServletResponse response,int httpCode) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
+        ObjectMapper om = new ObjectMapper();
+        PrintWriter out = null;
+        String s = null;
         try {
-            ObjectMapper om = new ObjectMapper();
-            String s = om.writeValueAsString(Result.failure(statue));
-            PrintWriter out = response.getWriter();
+            if (httpCode==401) {
+                 response.setStatus(401);
+                 s = om.writeValueAsString(Result.failure("尚未登录"));
+                out = response.getWriter();
+            } else if (httpCode==403) {
+                 response.setStatus(403);
+                 s = om.writeValueAsString(Result.failure("权限不足"));
+                 out = response.getWriter();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             out.println(s);
             out.flush();
             out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return false;
     }

@@ -15,14 +15,7 @@
     </resultMap>
 
     <select id="findPasswordByUsername" resultType="string">
-        select
-            password
-        from
-            hr
-        where
-            enabled=1
-        and
-            username=#{username}
+        select password from hr where enabled=1 and username=#{username}
     </select>
 
     <select id="findHrByUsername" resultMap="hrMap">

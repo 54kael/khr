@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kael.hr.mapper.DepartmentMapper">
+    <resultMap id="deptMap" type="com.kael.hr.entity.Department">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="parent_id" property="parentId" />
+        <result column="dep_path" property="depPath" />
+        <result column="enabled" property="enabled" />
+        <result column="is_parent" property="isParent" />
+    </resultMap>
+
+    <resultMap id="allDepartments" type="com.kael.hr.entity.Department" extends="deptMap">
+        <collection property="children" ofType="com.kael.hr.entity.Department"
+                    select="findAllDepartmentsByParentId" column="id" />
+    </resultMap>
+
+    <select id="findAllDepartmentsByParentId" resultMap="allDepartments">
+        select * from department where parent_id = #{parentId} and enabled = 1
+    </select>
+
+    <insert id="saveDepartment">
+        insert into department (name,parent_id) value (#{dept.name}, #{dept.parentId})
+    </insert>
+
+    <select id="findChildrenByParentId" resultMap="deptMap">
+        select * from department where parent_id = #{parentId}
+    </select>
+
+    <select id="getChildrenCountByParent" resultType="int">
+        select count(*) from department where parent_id = #{id}
+    </select>
+
+    <delete id="deleteDepartment">
+        delete from department where id = #{id}
+    </delete>
+
+    <update id="updateDepartment">
+        update department set name=#{d.name} where id=#{d.id}
+    </update>
+</mapper>

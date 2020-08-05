@@ -39,10 +39,10 @@ public class HrServiceImpl implements HrService {
         String username = hrLoginParameter.getUsername();
         String password = hrMapper.findPasswordByUsername(username);
         if (password==null) {
-            throw new HrException(Statue.NOT_FOUND);
+            throw new HrException("用户不存在");
         }
         if (!PasswordEncrypted.encrypted(loginPassword).equals(password)) {
-            throw new HrException(Statue.LOGIN_FAILED);
+            throw new HrException("用户名或者密码错误");
         }
 
         List<Role> roles = roleMapper.findRolesByUsername(username);
