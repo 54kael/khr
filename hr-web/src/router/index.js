@@ -7,6 +7,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    // 路由重定向
+    path:'/',
+    redirect: '/login'
+  },
+  {
     path: '/login',
     component: () => import('../views/Login.vue'),
     hidden: true
@@ -31,7 +36,7 @@ router.beforeEach((to, from, next) => {
     let routes = store.state.routes;
     if (routes.length == 0) {
       // 初始化路由表
-      initMenu(router, store);
+      initMenu(router, store);     
       next();
     } else {
       next();

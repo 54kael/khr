@@ -2,6 +2,9 @@ spring:
   profiles:
     active: dev
 
+server:
+  port: 8090
+
 secure:
   ignored:
     urls: #安全路径白名单
