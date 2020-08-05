@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
-import { initMenu } from '../util/menus'
+import { formatRoutes } from '../util/menus'
+import { getRequest } from '../util/api';
 
 Vue.use(VueRouter)
 
@@ -28,7 +29,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to.path)
   if (to.path == '/login') {
     next();
   } else {
@@ -36,8 +36,17 @@ router.beforeEach((to, from, next) => {
     let routes = store.state.routes;
     if (routes.length == 0) {
       // 初始化路由表
-      initMenu(router, store);     
-      next();
+      getRequest("/menu").then(resp => {
+        if (resp.code == "00000") {
+            // 将数据格式化成路由数组
+            let fmtRoutes = formatRoutes(resp.data.menus);
+            // 添加到路由表
+            router.addRoutes(fmtRoutes);
+            // 保存路由表到store
+            store.commit('initRoutes', fmtRoutes);
+            next(to.path);   
+        }
+    })
     } else {
       next();
     }

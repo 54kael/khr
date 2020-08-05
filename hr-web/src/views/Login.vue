@@ -68,10 +68,10 @@ export default {
                 console.log(resp.code);
               this.loading = false;
               localStorage.setItem("token", resp.data.token);
-              this.$store.commit("initRoutes", []);
-              let path = this.$route.query.redirect;
-              this.$router.replace(
-                path == "/" || path == undefined ? "/home" : path
+              //this.$store.commit("initRoutes", []);
+              //let path = this.$route.query.redirect;
+              this.$router.replace("/home"
+                //path == "/" || path == undefined ? "/home" : path
               );
             } else {
               this.loading = false;

@@ -1,3 +1,3 @@
 <template>
-    <div></div>
+    <div>基本资料</div>
 </template>

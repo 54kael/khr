@@ -1,18 +1,3 @@
-import { getRequest } from './api';
-
-export const initMenu = (router, store) => {
-    getRequest("/menu").then(resp => {
-        if (resp.code == "00000") {
-            // 将数据格式化成路由数组
-            let fmtRoutes = formatRoutes(resp.data.menus);
-            // 添加到路由表
-            router.addRoutes(fmtRoutes);
-            // 保存路由表到store
-            store.commit('initRoutes', fmtRoutes);
-        }
-    })
-}
-
 export const formatRoutes = (routes) => {
     let fmRoutes = [];
     routes.forEach(router => {

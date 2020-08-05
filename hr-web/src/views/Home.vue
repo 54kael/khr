@@ -102,6 +102,7 @@ export default {
   },
 
   mounted() {
+    console.log("home页面")
     this.getHrInfo();
   },
 };

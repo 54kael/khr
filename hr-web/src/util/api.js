@@ -29,8 +29,8 @@ axios.interceptors.response.use(success => {
     return;
 })
 
-let base = "http://120.24.28.194/api"
-//let base = 'http://localhost:8090';
+//let base = "http://120.24.28.194/api"
+let base = 'http://localhost:8090';
 export const postRequest = (url, params) => {
     return axios({
         method: 'post',
