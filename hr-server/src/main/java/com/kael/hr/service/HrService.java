@@ -3,7 +3,6 @@ package com.kael.hr.service;
 import com.kael.hr.entity.Hr;
 import com.kael.hr.entity.vo.HrLoginParameter;
 
-import java.util.Map;
 
 public interface HrService {
     /**

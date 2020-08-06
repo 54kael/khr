@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kael.hr.mapper.PositionMapper">
+    <resultMap id="posMap" type="com.kael.hr.entity.Position">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="create_date" property="createDate" />
+        <result column="enabled" property="enabled" />
+    </resultMap>
+
+    <select id="findPosByName" resultMap="posMap">
+        select * from position where name=#{name}
+    </select>
+
+    <select id="findAllPositions" resultMap="posMap">
+        select * from position
+    </select>
+
+    <delete id="deletePosById">
+        delete from position where id = #{id}
+    </delete>
+
+    <insert id="savePosition">
+        insert into
+            position (name, create_date, enabled)
+        value
+            (#{p.name}, #{p.createDate}, #{p.enabled})
+    </insert>
+
+    <update id="updatePos">
+        update
+            position
+        set
+            name=#{p.name}, enabled=#{p.enabled}
+        where
+            id=#{p.id}
+    </update>
+
+    <select id="getPosEmployeeCount" resultType="long">
+        select count(*) from employee where pos_id=#{posId}
+    </select>
+
+    <update id="updatePosStatue">
+        update position set enabled=#{enabled} where id=#{id}
+    </update>
+</mapper>

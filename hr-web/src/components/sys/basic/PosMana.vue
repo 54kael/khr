@@ -22,32 +22,24 @@
         @selection-change="handleSelectionChange"
         size="small"
         stripe
-        style="width: 70%"
+        style="width: 45%"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="编号" width="55"></el-table-column>
-        <el-table-column prop="name" label="职位名称" width="180"></el-table-column>
-        <el-table-column prop="createDate" width="150" label="创建时间"></el-table-column>
-        <el-table-column label="是否启用">
+        <el-table-column align="center" prop="id" label="编号" width="55"></el-table-column>
+        <el-table-column align="center" prop="name" label="职位名称" width="180"></el-table-column>
+        <el-table-column align="center" prop="createDate" width="150" label="创建时间"></el-table-column>
+        <el-table-column align="center" label="是否启用" width="80">
           <template slot-scope="scope">
             <el-tag size="small" type="success" v-if="scope.row.enabled">已启用</el-tag>
             <el-tag size="small" type="danger" v-else>未启用</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column align="center" label="操作" width="180">
           <template slot-scope="scope">
             <el-button size="mini" @click="showEditView(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-button
-        @click="deleteMany"
-        type="danger"
-        size="small"
-        style="margin-top: 8px"
-        :disabled="multipleSelection.length==0"
-      >批量删除</el-button>
     </div>
     <el-dialog title="修改职位" :visible.sync="dialogVisible" width="30%">
       <div>
@@ -57,7 +49,7 @@
         </div>
         <div>
           <el-tag>是否启用</el-tag>
-          <el-switch v-model="updatePos.enabled" active-text="启用" inactive-text="禁用"></el-switch>
+          <el-switch v-model="updatePos.enabled" :active-value="1" :inactive-value="0" active-text="启用" inactive-text="禁用"></el-switch>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -80,7 +72,7 @@ export default {
       loading: false,
       updatePos: {
         name: "",
-        enabled: false,
+        enabled: 0,
       },
       multipleSelection: [],
       positions: [],
@@ -125,10 +117,13 @@ export default {
     },
     addPosition() {
       if (this.pos.name) {
-        this.postRequest("/system/basic/pos/", this.pos).then((resp) => {
-          if (resp) {
+        this.$postRequest("/system/basic/pos/", this.pos).then((resp) => {
+          if (resp.code=="00000") {
+            this.$message.success("添加成功")
             this.initPositions();
             this.pos.name = "";
+          } else {
+              this.$message.error(resp.message);
           }
         });
       } else {
@@ -140,8 +135,9 @@ export default {
       this.dialogVisible = true;
     },
     doUpdate() {
-      this.putRequest("/system/basic/pos/", this.updatePos).then((resp) => {
-        if (resp) {
+      this.$postRequest("/system/basic/pos/", this.updatePos).then((resp) => {
+        if (resp.code=="00000") {
+        this.$message.success("更新成功")
           this.initPositions();
           this.updatePos.name = "";
           this.dialogVisible = false;
@@ -159,10 +155,13 @@ export default {
         }
       )
         .then(() => {
-          this.deleteRequest("/system/basic/pos/" + data.id).then((resp) => {
-            if (resp) {
+          this.$deleteRequest("/system/basic/pos/" + data.id).then((resp) => {
+            if (resp.code=="00000") {
+              this.$message("删除成功")
               this.initPositions();
-            }
+            } else (
+                this.$message.error(resp.message)
+            )
           });
         })
         .catch(() => {
@@ -174,10 +173,10 @@ export default {
     },
     initPositions() {
       this.loading = true;
-      this.getRequest("/system/basic/pos/").then((resp) => {
+      this.$getRequest("/system/basic/pos/").then((resp) => {
         this.loading = false;
-        if (resp) {
-          this.positions = resp;
+        if (resp.code=="00000") {
+          this.positions = resp.data.positions;
         }
       });
     },

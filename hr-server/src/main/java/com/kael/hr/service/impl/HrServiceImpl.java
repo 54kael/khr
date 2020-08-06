@@ -8,7 +8,6 @@ import com.kael.hr.exception.HrException;
 import com.kael.hr.mapper.HrMapper;
 import com.kael.hr.mapper.MenuMapper;
 import com.kael.hr.mapper.RoleMapper;
-import com.kael.hr.responst.Statue;
 import com.kael.hr.service.HrService;
 import com.kael.hr.util.JwtUtil;
 import com.kael.hr.util.PasswordEncrypted;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author kael

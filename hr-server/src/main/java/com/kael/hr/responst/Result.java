@@ -42,6 +42,10 @@ public class Result {
         return this;
     }
 
+    /**
+     * 操作失败
+     * @param message 失败信息
+     */
     public static  Result failure(String message) {
         Result result = new Result();
         result.setCode("50000");

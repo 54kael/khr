@@ -17,9 +17,8 @@ public interface DepartmentMapper {
     /**
      * 添加部门
      * @param dept 需要添加的部门
-     * @return 操作受影响的行数,返回0表示操作失败
      */
-    Integer saveDepartment(@Param("dept") DeptParam dept);
+    void saveDepartment(@Param("dept") DeptParam dept);
 
     /**
      * 获取部门下面有多少个子部门
@@ -30,7 +29,7 @@ public interface DepartmentMapper {
 
     /**
      * 根据部门id删除部门
-     * @param deptId 部门id
+     * @param id 部门id
      */
     void deleteDepartment(@Param("id") int id);
 

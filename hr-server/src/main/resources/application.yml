@@ -1,7 +1,8 @@
 spring:
   profiles:
     active: dev
-
+  jackson:
+    date-format: yyyy-MM-dd
 server:
   port: 8090
 

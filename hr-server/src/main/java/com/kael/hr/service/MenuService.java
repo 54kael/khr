@@ -1,7 +1,6 @@
 package com.kael.hr.service;
 
 import com.kael.hr.entity.Menu;
-import com.kael.hr.entity.Role;
 
 import java.util.List;
 
