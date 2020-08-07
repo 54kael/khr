@@ -19,4 +19,20 @@
         WHERE
             hr.username = #{username};
     </select>
+
+    <select id="findAllRoles" resultMap="roleMap">
+        select * from role
+    </select>
+
+    <insert id="saveRole">
+        insert into role (name,name_zh) value (#{role.name}, #{role.nameZh})
+    </insert>
+
+    <delete id="deleteRole">
+        delete from role where id = #{id}
+    </delete>
+
+    <select id="getCountHrByRole" resultType="int">
+        select count(*) from hr_role where role_id = #{id}
+    </select>
 </mapper>

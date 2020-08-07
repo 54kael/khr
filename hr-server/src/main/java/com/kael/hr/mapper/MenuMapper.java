@@ -20,4 +20,30 @@ public interface MenuMapper {
      * @return 菜单树
      */
     List<Menu> findMenusByRoles(@Param("roles") List<Role> roles);
+
+    /**
+     * 根据角色id查找菜单id
+     * @param rid 角色id
+     * @return 角色id下的菜单id列表
+     */
+    List<Integer> findMenuIdsByRoleId(@Param("rid") Integer rid);
+
+    /**
+     * 获取所有菜单的id和name
+     * @return 所有菜单的id和name
+     */
+    List<Menu> findAllMenusIdAndName(@Param("id") Integer id);
+
+    /**
+     * 根据角色id删除菜单
+     * @param rid 角色id
+     */
+    void deleteMenuByRoleId(@Param("rid") Integer rid);
+
+    /**
+     * 添加角色的所有菜单
+     * @param rid 角色id
+     * @param mIds 菜单的id
+     */
+    void saveMenu(@Param("rid")Integer rid, @Param("mIds")Integer[] mIds);
 }

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kael.hr.mapper.MenuMapper">
-    <resultMap id="menuMap" type="com.kael.hr.entity.Menu">
+    <resultMap id="baseMenuMap" type="com.kael.hr.entity.vo.PermissionMenusVo">
         <id column="id" property="id" />
+        <result column="name" property="name" />
+    </resultMap>
+    <resultMap id="menuMap" type="com.kael.hr.entity.Menu" extends="baseMenuMap">
         <result column="url" property="url" />
         <result column="path" property="path" />
         <result column="component" property="component" />
-        <result column="name" property="name" />
         <result column="icon_cls" property="iconCls" />
+    </resultMap>
+    <resultMap id="allMenu" type="com.kael.hr.entity.vo.PermissionMenusVo" extends="baseMenuMap">
+        <collection property="children" column="id" ofType="com.kael.hr.entity.vo.PermissionMenusVo"
+                    select="findAllMenusIdAndName" />
     </resultMap>
 
     <resultMap id="menuTree" type="com.kael.hr.entity.Menu" extends="menuMap">
@@ -53,5 +59,25 @@
         </foreach>
         GROUP BY m1.id;
     </select>
+
+    <select id="findMenuIdsByRoleId" resultType="int">
+        select menu_id from menu_role where role_id = #{rid}
+    </select>
+
+    <select id="findAllMenusIdAndName" resultMap="allMenu">
+        select id,name from menu where  parent_id = #{id}
+    </select>
+
+
+    <delete id="deleteMenuByRoleId">
+        delete from menu_role where role_id = #{rid}
+    </delete>
+
+    <insert id="saveMenu">
+        insert into menu_role (menu_id, role_id) value
+        <foreach collection="mIds" separator="," item="mid">
+            (#{mid},#{rid})
+        </foreach>
+    </insert>
 
 </mapper>

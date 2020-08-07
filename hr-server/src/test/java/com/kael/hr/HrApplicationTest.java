@@ -1,6 +1,7 @@
 package com.kael.hr;
 
 import com.kael.hr.entity.Menu;
+import com.kael.hr.entity.Role;
 import com.kael.hr.util.IgnoreUrlsConfig;
 import com.kael.hr.util.JwtUtil;
 import com.kael.hr.util.PasswordEncrypted;

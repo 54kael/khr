@@ -1,6 +1,5 @@
 package com.kael.hr.util;
 import com.kael.hr.entity.Menu;
-import com.kael.hr.exception.HrException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

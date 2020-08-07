@@ -96,10 +96,13 @@ export default {
         }
       )
         .then(() => {
-          this.deleteRequest("/system/basic/permiss/role/" + role.id).then(
+          this.$deleteRequest("/system/basic/permission/role/" + role.id).then(
             (resp) => {
-              if (resp) {
+              if (resp.code=="00000") {
+                this.$message.success("删除成功！");
                 this.initRoles();
+              }else {
+                this.$message.error(resp.message);
               }
             }
           );
@@ -114,13 +117,16 @@ export default {
     doAddRole() {
       if (this.role.name && this.role.nameZh) {
         this.globalLoading = true;
-        this.postRequest("/system/basic/permiss/role", this.role).then(
+        this.$postRequest("/system/basic/permission/role", this.role).then(
           (resp) => {
             this.globalLoading = false;
-            if (resp) {
+            if (resp.code=="00000") {
+              this.$message.success("添加成功!");
               this.role.name = "";
               this.role.nameZh = "";
               this.initRoles();
+            } else {
+              this.$message.error(resp.message);
             }
           }
         );
@@ -134,12 +140,13 @@ export default {
     doUpdate(rid, index) {
       let tree = this.$refs.tree[index];
       let selectedKeys = tree.getCheckedKeys(true);
-      let url = "/system/basic/permiss/?rid=" + rid;
+      let url = "/system/basic/permission?rid=" + rid;
       selectedKeys.forEach((key) => {
         url += "&mids=" + key;
       });
-      this.putRequest(url).then((resp) => {
-        if (resp) {
+      this.$putRequest(url).then((resp) => {
+        if (resp.code=="00000") {
+          this.$message.success("更新成功")
           this.activeName = -1;
         }
       });
@@ -151,25 +158,25 @@ export default {
       }
     },
     initSelectedMenus(rid) {
-      this.getRequest("/system/basic/permiss/mids/" + rid).then((resp) => {
-        if (resp) {
-          this.selectedMenus = resp;
+      this.$getRequest("/system/basic/permission/menuIds/" + rid).then((resp) => {
+        if (resp.code=="00000") {
+          this.selectedMenus = resp.data.mids;
         }
       });
     },
     initAllMenus() {
-      this.getRequest("/system/basic/permiss/menus").then((resp) => {
-        if (resp) {
-          this.allmenus = resp;
+      this.$getRequest("/system/basic/permission/menus").then((resp) => {
+        if (resp.code=="00000") {
+          this.allmenus = resp.data.menus;
         }
       });
     },
     initRoles() {
       this.loading = true;
-      this.getRequest("/system/basic/permiss/").then((resp) => {
+      this.$getRequest("/system/basic/permission").then((resp) => {
         this.loading = false;
-        if (resp) {
-          this.roles = resp;
+        if (resp.code=="00000") {
+          this.roles = resp.data.allRoles;
         }
       });
     },
