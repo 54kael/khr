@@ -19,7 +19,7 @@ public class Position {
     @NotNull(message = "职位名称为空")
     private String name;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间",hidden = true)
     private Date createDate;
 
     @ApiModelProperty("是否启用")

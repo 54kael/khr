@@ -28,33 +28,25 @@
         element-loading-background="rgba(0, 0, 0, 0.8)"
         size="small"
         @selection-change="handleSelectionChange"
-        style="width: 80%"
+        style="width: 54%"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="编号" width="55"></el-table-column>
-        <el-table-column prop="name" label="职称名称" width="150"></el-table-column>
-        <el-table-column prop="titleLevel" label="职称级别"></el-table-column>
-        <el-table-column prop="createDate" label="创建时间"></el-table-column>
-        <el-table-column label="是否启用">
+        <el-table-column align="center" prop="id" label="编号" width="55"></el-table-column>
+        <el-table-column align="center" prop="name" label="职称名称" width="150"></el-table-column>
+        <el-table-column align="center" prop="titleLevel" label="职称级别" width="120"></el-table-column>
+        <el-table-column align="center" prop="createDate" label="创建时间" width="150"></el-table-column>
+        <el-table-column align="center" label="是否启用" width="130">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.enabled">已启用</el-tag>
             <el-tag type="danger" v-else>未启用</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column align="center" label="操作" width="180">
           <template slot-scope="scope">
             <el-button size="small" @click="showEditView(scope.row)">编辑</el-button>
             <el-button size="small" type="danger" @click="deleteHandler(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-button
-        type="danger"
-        size="small"
-        style="margin-top: 10px"
-        :disabled="multipleSelection.length==0"
-        @click="deleteMany"
-      >批量删除</el-button>
     </div>
     <el-dialog title="修改职称" :visible.sync="dialogVisible" width="30%">
       <div>
@@ -87,7 +79,7 @@
               <el-tag>是否启用</el-tag>
             </td>
             <td>
-              <el-switch v-model="updateJl.enabled" active-text="启用" inactive-text="禁用"></el-switch>
+              <el-switch v-model="updateJl.enabled" :active-value="1" active-text="启用" :inactive-value="0" inactive-text="禁用"></el-switch>
             </td>
           </tr>
         </table>
@@ -111,7 +103,7 @@ export default {
       updateJl: {
         name: "",
         titleLevel: "",
-        enabled: false,
+        enabled: 0,
       },
       jl: {
         name: "",
@@ -156,10 +148,13 @@ export default {
         });
     },
     doUpdate() {
-      this.putRequest("/system/basic/joblevel/", this.updateJl).then((resp) => {
-        if (resp) {
+      this.$postRequest("/system/basic/jobLevel/", this.updateJl).then((resp) => {
+        if (resp.code=="00000") {
+          this.$message.success("更新成功！")
           this.initJls();
           this.dialogVisible = false;
+        } else {
+          this.$message.error(resp.message);
         }
       });
     },
@@ -181,10 +176,13 @@ export default {
         }
       )
         .then(() => {
-          this.deleteRequest("/system/basic/joblevel/" + data.id).then(
+          this.$deleteRequest("/system/basic/jobLevel/" + data.id).then(
             (resp) => {
-              if (resp) {
+              if (resp.code=="00000") {
+                this.$message.success("删除成功！")
                 this.initJls();
+              } else {
+                this.$message.error(resp.message);
               }
             }
           );
@@ -198,9 +196,12 @@ export default {
     },
     addJobLevel() {
       if (this.jl.name && this.jl.titleLevel) {
-        this.postRequest("/system/basic/joblevel/", this.jl).then((resp) => {
-          if (resp) {
+        this.$postRequest("/system/basic/jobLevel/", this.jl).then((resp) => {
+          if (resp.code=="00000") {
+            this.$message.success("添加成功")
             this.initJls();
+          } else {
+            this.$message.error(resp.message);
           }
         });
       } else {
@@ -209,10 +210,10 @@ export default {
     },
     initJls() {
       this.loading = true;
-      this.getRequest("/system/basic/joblevel/").then((resp) => {
+      this.$getRequest("/system/basic/jobLevel").then((resp) => {
         this.loading = false;
-        if (resp) {
-          this.jls = resp;
+        if (resp.code=="00000") {
+          this.jls = resp.data.jobLevels;
           this.jl = {
             name: "",
             titleLevel: "",
