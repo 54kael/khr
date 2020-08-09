@@ -23,8 +23,10 @@ axios.interceptors.response.use(success => {
     } else if (error.response.status == 401) {
         Message.error("尚未登录");
         router.replace("/login");
+    } else if(error.response.status == 400){
+        Message.error(error.response.data.message);
     } else {
-        Message.error("未知错误");
+        Message.error("未知错误")
     }
     return;
 })

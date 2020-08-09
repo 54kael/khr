@@ -1,7 +1,7 @@
 package com.kael.hr.entity;
 
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.util.Date;
 
 /**
@@ -9,7 +9,8 @@ import java.util.Date;
  * @Description
  * @Date 2020/8/6 0006
  */
-@Data
+@Getter
+@Setter
 public class Employee {
     /**
      * id 主键
@@ -34,7 +35,7 @@ public class Employee {
     /**
      * 身份证
      */
-    private String id_card;
+    private String idCard;
 
     /**
      * 婚否
@@ -42,34 +43,20 @@ public class Employee {
     private String wedlock;
 
     /**
-     * 民族id
-     */
-    private Integer nationId;
-
-    /**
      * 民族
      */
-    private String nation;
-
-    /**
-     * 祖籍省份id
-     */
-    private Integer nativePlaceId;
+    private Nation nation;
 
     /**
      * 祖籍省份
      */
     private String nativePlace;
 
-    /**
-     * 政治面貌id
-     */
-    private Integer politicId;
 
     /**
      * 政治面貌
      */
-    private String politic;
+    private Politics politics;
 
     /**
      * 邮箱
@@ -87,34 +74,21 @@ public class Employee {
     private String address;
 
     /**
-     * 部门id
-     */
-    private Integer departmentId;
-
-    /**
      * 部门
      */
-    private String department;
+    private Department department;
 
-    /**
-     * 职称id
-     */
-    private Integer jobLevelId;
 
     /**
      * 职称
      */
-    private String jobLevel;
+    private JobLevel jobLevel;
 
-    /**
-     * 岗位id
-     */
-    private Integer posId;
 
     /**
      * 岗位
      */
-    private String pos;
+    private Position pos;
 
     /**
      * 雇佣形式
@@ -124,7 +98,7 @@ public class Employee {
     /**
      * 最高学历
      */
-    private String tipTopDegree;
+    private String tiptopDegree;
 
     /**
      * 大学专业
@@ -142,9 +116,9 @@ public class Employee {
     private Date beginDate;
 
     /**
-     * 在职状态 1)在职 0)离职
+     * 在职状态
      */
-    private Byte workState;
+    private String workState;
 
     /**
      * 工号

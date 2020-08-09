@@ -2,9 +2,11 @@ package com.kael.hr;
 
 import com.kael.hr.entity.Menu;
 import com.kael.hr.entity.Role;
+import com.kael.hr.service.EmployeeService;
 import com.kael.hr.util.IgnoreUrlsConfig;
 import com.kael.hr.util.JwtUtil;
 import com.kael.hr.util.PasswordEncrypted;
+import com.kael.hr.util.WorkIdPrefix;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import java.util.List;
 public class HrApplicationTest {
     @Autowired
     IgnoreUrlsConfig ignoreUrlsConfig;
+
+    @Autowired
+    EmployeeService employeeService;
     @Test
     public void passwordTest() {
         String encrypted = PasswordEncrypted.encrypted("123");
@@ -51,5 +56,11 @@ public class HrApplicationTest {
         String username = "admin";
         String jwt = JwtUtil.createJwt(username, menus);
         System.out.println(jwt);
+    }
+
+
+    @Test
+    public void testWorkIdPrefix(){
+        employeeService.saveEmployee(null);
     }
 }
