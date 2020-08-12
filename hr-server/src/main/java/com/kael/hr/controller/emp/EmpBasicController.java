@@ -2,7 +2,6 @@ package com.kael.hr.controller.emp;
 
 import com.kael.hr.entity.*;
 import com.kael.hr.entity.vo.FindEmployeeCondition;
-import com.kael.hr.entity.vo.PutEmpParam;
 import com.kael.hr.responst.Result;
 import com.kael.hr.service.*;
 import io.swagger.annotations.Api;
@@ -59,14 +58,14 @@ public class EmpBasicController {
     @ApiOperation("条件分页查询员工")
     @PostMapping("/{page}")
     public Result getEmployeeByPageCondition(@PathVariable("page") Integer page, @RequestBody(required = false) FindEmployeeCondition cond) {
-        System.out.println(cond);
         Map<String, Object> emp = employeeServiceImpl.findEmpByPageCondition(page, cond);
         return Result.ok().data(emp);
     }
 
     @ApiOperation("添加、修改员工信息")
     @PostMapping
-    public Result saveEmployee(@RequestBody @Validated PutEmpParam employee){
+    public Result saveEmployee(@RequestBody @Validated Employee employee){
+        System.out.println(employee.getBirthday());
         String workId = employee.getWorkId();
         if (workId==null) {
             log.info("工号为空，添加员工");

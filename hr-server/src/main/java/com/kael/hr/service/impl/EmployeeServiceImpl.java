@@ -2,8 +2,7 @@ package com.kael.hr.service.impl;
 
 import com.kael.hr.entity.Employee;
 import com.kael.hr.entity.vo.FindEmployeeCondition;
-import com.kael.hr.entity.vo.PutEmpParam;
-import com.kael.hr.mapper.EmployeeMapper;
+import com.kael.hr.mapper.*;
 import com.kael.hr.service.EmployeeService;
 import com.kael.hr.util.WorkIdPrefix;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -22,10 +24,16 @@ import java.util.*;
 public class EmployeeServiceImpl implements EmployeeService {
     @Resource
     EmployeeMapper employeeMapper;
-
-    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-    SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-    DecimalFormat decimalFormat = new DecimalFormat("##.00");
+    @Resource
+    DepartmentMapper departmentMapper;
+    @Resource
+    JobLevelMapper jobLevelMapper;
+    @Resource
+    PositionMapper positionMapper;
+    @Resource
+    NationMapper nationMapper;
+    @Resource
+    PoliticsMapper politicsMapper;
 
     @Override
     public Map<String,Object> findEmpByPageCondition(int currentPage, FindEmployeeCondition cond) {
@@ -40,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void saveEmployee(PutEmpParam employee) {
+    public void saveEmployee(Employee employee) {
         String workId;
         // 获取当天入职员工数，并加1，组成新员工id
         // 查询员工时，需要开启事务并且用<for update>锁表,防止出错
@@ -53,21 +61,43 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             workId = idPrefix+nu;
         }
-        Date beginContract = employee.getBeginContract();
-        Date endContract = employee.getEndContract();
-        double month = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
-        employee.setContractTerm(Double.parseDouble(decimalFormat.format(month / 12)));
         employee.setWorkId(workId);
-        System.out.println(employee);
-        employeeMapper.saveEmployee(employee);
+
+        Employee employee1 = redundantFieldAssignment(employee);
+        System.out.println(employee1);
+        employeeMapper.saveEmployee(employee1);
+    }
+
+    @Transactional
+    @Override
+    public void updateEmployee(Employee employee) {
+        System.out.println(employee.getBirthday());
+        Employee employee1 = redundantFieldAssignment(employee);
+        employeeMapper.updateEmployee(employee1);
     }
 
     @Override
-    public void updateEmployee(PutEmpParam employee) {
-        Date beginContract = employee.getBeginContract();
-        Date endContract = employee.getEndContract();
-        double month = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
-        employee.setContractTerm(Double.parseDouble(decimalFormat.format(month / 12)));
-        employeeMapper.updateEmployee(employee);
+    public List<Employee> findExportDate() {
+        return employeeMapper.findExportDate();
+    }
+
+    /**
+     * employee冗余字段赋值
+     * @param employee 不完整字段
+     * @return 完整employee
+     */
+    private Employee redundantFieldAssignment(Employee employee){
+        // 计算合同期限
+        LocalDate sd = employee.getBeginContract().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate ed = employee.getEndContract().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Double a = ChronoUnit.DAYS.between(sd,ed)/365.0;
+        DecimalFormat df2 = new DecimalFormat("###.00");
+        employee.setDepartment(departmentMapper.findDeptNameById(employee.getDepartmentId()));
+        employee.setPolitic(politicsMapper.findPoliticNameById(employee.getPoliticId()));
+        employee.setNation(nationMapper.findNationNameById(employee.getNationId()));
+        employee.setJobLevel(jobLevelMapper.findJobLevelNameById(employee.getJobLevelId()));
+        employee.setPos(positionMapper.findPosNameById(employee.getPosId()));
+        employee.setContractTerm(Double.valueOf(df2.format(a)));
+        return employee;
     }
 }

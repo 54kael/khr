@@ -38,4 +38,11 @@ public interface JobLevelMapper {
      */
     void deletedJobLevel(@Param("id") Integer id);
 
+    /**
+     * 根据职称id查找职称名称
+     * @param id 职称id
+     * @return 职称名字
+     */
+    String findJobLevelNameById(@Param("id") Integer id);
+
 }

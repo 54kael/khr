@@ -14,8 +14,10 @@ import { postRequest } from "./util/api";
 import { putRequest } from "./util/api";
 import { deleteRequest } from "./util/api";
 import { getRequest } from "./util/api";
+import { downloadRequest } from "./util/api";
 
 
+Vue.prototype.$downloadRequest=downloadRequest;
 Vue.prototype.$postRequest = postRequest;
 Vue.prototype.$putRequest = putRequest;
 Vue.prototype.$deleteRequest = deleteRequest;

@@ -4,4 +4,8 @@
     <select id="findAllNations" resultType="com.kael.hr.entity.Nation">
         select * from nation
     </select>
+
+    <select id="findNationNameById" resultType="string">
+        select name from nation where id = #{id}
+    </select>
 </mapper>

@@ -4,4 +4,8 @@
      <select id="findAllPolitics" resultType="com.kael.hr.entity.Politics">
          select * from politics_status
      </select>
+
+    <select id="findPoliticNameById" resultType="string">
+        select name from politics_status where id = #{id}
+    </select>
 </mapper>

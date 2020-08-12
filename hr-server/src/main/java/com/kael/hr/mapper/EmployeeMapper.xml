@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kael.hr.mapper.EmployeeMapper">
-    <resultMap id="employeeMap" type="com.kael.hr.entity.Employee">
+    <resultMap id="baseEmpMap" type="com.kael.hr.entity.Employee">
         <id column="id" property="id" />
+        <result column="work_id" property="workId" />
         <result column="name" property="name" />
         <result column="gender" property="gender" />
         <result column="birthday" property="birthday" />
         <result column="id_card" property="idCard" />
         <result column="wedlock" property="wedlock" />
         <result column="native_place" property="nativePlace" />
+        <result column="department_id" property="departmentId" />
+        <result column="department" property="department" />
+        <result column="politic_id" property="politicId" />
+        <result column="politic" property="politic" />
+        <result column="nation_id" property="nationId" />
+        <result column="nation" property="nation" />
+        <result column="job_level_id" property="jobLevelId" />
+        <result column="job_level" property="jobLevel" />
+        <result column="pos_id" property="posId" />
+        <result column="pos" property="pos" />
         <result column="email" property="email" />
         <result column="phone" property="phone" />
         <result column="address" property="address" />
@@ -18,80 +29,36 @@
         <result column="school" property="school" />
         <result column="begin_date" property="beginDate" />
         <result column="work_state" property="workState" />
-        <result column="work_id" property="workId" />
         <result column="contract_term" property="contractTerm" />
         <result column="conversion_time" property="conversionTime" />
         <result column="begin_contract" property="beginContract" />
         <result column="end_contract" property="endContract" />
         <result column="work_age" property="workAge" />
-        <association property="department" javaType="com.kael.hr.entity.Department">
-            <id column="dept_id" property="id" />
-            <result column="department" property="name" />
-        </association>
-
-        <association property="jobLevel" javaType="com.kael.hr.entity.JobLevel">
-            <id column="jol_id" property="id" />
-            <result column="jobLevel" property="name" />
-        </association>
-
-        <association property="pos" javaType="com.kael.hr.entity.Position">
-            <id column="pos_id" property="id" />
-            <result column="pos" property="name" />
-        </association>
-        <association property="politics" javaType="com.kael.hr.entity.Politics">
-            <id property="id" column="poli_id" />
-            <result property="name" column="politics" />
-        </association>
-        <association property="nation" javaType="com.kael.hr.entity.Nation">
-            <id property="id" column="nation_id" />
-            <result property="name" column="nation" />
-        </association>
     </resultMap>
 
     <select id="findEmpCountByDept" resultType="long">
         select count(*) from employee where department_id = #{deptId} and work_state = 1
     </select>
-    
-    <select id="findEmpByPageCondition" resultMap="employeeMap">
+
+    <select id="findExportDate" resultMap="baseEmpMap">
         select
-            emp.id,
-            emp.name,
-            emp.gender,
-            emp.birthday,
-            emp.id_card,
-            emp.wedlock,
-            nat.name AS nation,nat.id as nation_id,
-            emp.native_place,
-            emp.email,
-            emp.phone,
-            emp.address,
-            dept.name AS department,dept.id as dept_id,
-            jol.name AS jobLevel,jol.id as jol_id,
-            poli.name as politics,poli.id as poli_id,
-            pos.name AS pos,pos.id as pos_id,
-            emp.engage_form,
-            emp.tiptop_degree,
-            emp.specialty,
-            emp.school,
-            emp.begin_date,
-            emp.work_state,
-            emp.work_id,
-            emp.contract_term,
-            emp.conversion_time,
-            emp.begin_contract,
-            emp.end_contract
+            emp.name, emp.gender, emp.birthday, emp.id_card, emp.wedlock, emp.nation, emp.native_place, emp.email,
+            emp.phone, emp.address, emp.department, emp.job_level, emp.politic, emp.pos, emp.engage_form, emp.tiptop_degree,
+            emp.specialty, emp.school, emp.begin_date, emp.work_state, emp.work_id, emp.contract_term, emp.conversion_time,
+            emp.begin_contract, emp.end_contract
         from
-            employee AS emp
-                INNER JOIN
-            department AS dept ON emp.department_id = dept.id
-                INNER JOIN
-            nation AS nat ON emp.nation_id = nat.id
-                INNER JOIN
-            politics_status AS poli ON emp.politic_id = poli.id
-                INNER JOIN
-            position AS pos ON emp.pos_id = pos.id
-                INNER JOIN
-            job_level AS jol ON emp.job_level_id = jol.id
+            employee as emp
+    </select>
+    
+    <select id="findEmpByPageCondition" resultMap="baseEmpMap">
+        select
+            emp.name, emp.gender, emp.birthday, emp.id_card, emp.wedlock, emp.nation_id,emp.nation, emp.native_place,
+            emp.email, emp.phone, emp.address,emp.department_id, emp.department, emp.job_level_id,emp.job_level,
+            emp.politic_id,emp.politic,emp.pos_id, emp.pos, emp.engage_form,
+            emp.tiptop_degree, emp.specialty, emp.school, emp.begin_date, emp.work_state, emp.work_id, emp.contract_term,
+            emp.conversion_time, emp.begin_contract, emp.end_contract
+        from
+            employee as emp
         <where>
             <if test="cond!=null">
                 <if test="cond.name !=null and cond.name !=''">
@@ -158,23 +125,26 @@
             </if>
         </where>
     </select>
+
     <select id="getCountEmpByCurrentDay" resultType="int">
         select count(*) from employee where work_id like "${currentDay}%" for update
     </select>
 
     <insert id="saveEmployee">
         insert into employee (
-            name, gender,birthday, id_card, wedlock,
-            nation_id, native_place, politic_id, email, phone,
-            address, department_id, job_level_id, pos_id, engage_form,
-            tiptop_degree, specialty, school, begin_date, work_state,
-            work_id, contract_term, conversion_time, begin_contract, end_contract)
+            name, gender, birthday, id_card, wedlock,
+            nation_id, nation, native_place, politic_id, politic,
+            email, phone, address, department_id, department,
+            job_level_id, job_level, pos_id,pos, engage_form, tiptop_degree,
+            specialty, school, begin_date, work_state, work_id,
+            contract_term, conversion_time, begin_contract, end_contract)
         value (
             #{emp.name}, #{emp.gender}, #{emp.birthday}, #{emp.idCard}, #{emp.wedlock},
-            #{emp.nationId}, #{emp.nativePlace}, #{emp.politicsId}, #{emp.email}, #{emp.phone},
-            #{emp.address}, #{emp.departmentId}, #{emp.jobLevelId}, #{emp.posId}, #{emp.engageForm},
-            #{emp.tiptopDegree}, #{emp.specialty}, #{emp.school}, #{emp.beginDate}, "在职",
-            #{emp.workId}, #{emp.contractTerm}, #{emp.conversionTime}, #{emp.beginContract}, #{emp.endContract})
+            #{emp.nationId},#{emp.nation}, #{emp.nativePlace}, #{emp.politicId},#{emp.politic},
+            #{emp.email}, #{emp.phone}, #{emp.address}, #{emp.departmentId},#{emp.department},
+            #{emp.jobLevelId},#{emp.jobLevel}, #{emp.posId},#{emp.pos}, #{emp.engageForm}, #{emp.tiptopDegree},
+            #{emp.specialty}, #{emp.school}, #{emp.beginDate}, "在职", #{emp.workId},
+            #{emp.contractTerm}, #{emp.conversionTime}, #{emp.beginContract}, #{emp.endContract})
     </insert>
 
     <update id="updateEmployee">
@@ -187,14 +157,19 @@
             id_card=#{emp.idCard},
             wedlock=#{emp.wedlock},
             nation_id=#{emp.nationId},
+            nation=#{emp.nation},
             native_place=#{emp.nativePlace},
-            politic_id=#{emp.politicsId},
+            politic_id=#{emp.politicId},
+            politic=#{emp.politic},
             email=#{emp.email},
             phone=#{emp.phone},
             address=#{emp.address},
             department_id=#{emp.departmentId},
+            department=#{emp.department},
             job_level_id=#{emp.jobLevelId},
+            job_level=#{emp.jobLevel},
             pos_id=#{emp.posId},
+            pos=#{emp.pos},
             engage_form=#{emp.engageForm},
             tiptop_degree=#{emp.tiptopDegree},
             specialty=#{emp.specialty},

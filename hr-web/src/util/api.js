@@ -40,6 +40,13 @@ export const postRequest = (url, params) => {
         data: params
     })
 }
+export const downloadRequest = (url) => {
+    return axios({
+        method: 'get',
+        url: `${base}${url}`,
+        responseType: "blob"
+    })
+}
 export const putRequest = (url, params) => {
     return axios({
         method: 'put',

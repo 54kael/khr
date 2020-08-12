@@ -44,4 +44,8 @@
     <select id="getCountEmployeeByJobLevelId" resultType="long">
         select count(*) from employee where job_level_id = #{jobLevelId}
     </select>
+
+    <select id="findJobLevelNameById" resultType="string">
+        select name from job_level where id = #{id}
+    </select>
 </mapper>

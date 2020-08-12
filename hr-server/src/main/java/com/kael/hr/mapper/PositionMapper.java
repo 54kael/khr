@@ -50,4 +50,11 @@ public interface PositionMapper {
      * @return 职位
      */
     Position findPosByName(@Param("name") String name);
+
+    /**
+     * 根据id获取职位名
+     * @param id id
+     * @return 职位名
+     */
+    String findPosNameById(@Param("id") Integer id);
 }

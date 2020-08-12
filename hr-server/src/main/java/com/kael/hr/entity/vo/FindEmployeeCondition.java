@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @Author kael
- * @Description
+ * @Description  查询员工的条件类
  * @Date 2020/8/9 0009
  */
 @ApiModel("查找员工的条件")

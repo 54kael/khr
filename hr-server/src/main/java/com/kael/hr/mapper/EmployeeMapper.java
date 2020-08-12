@@ -2,7 +2,6 @@ package com.kael.hr.mapper;
 
 import com.kael.hr.entity.Employee;
 import com.kael.hr.entity.vo.FindEmployeeCondition;
-import com.kael.hr.entity.vo.PutEmpParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -42,11 +41,16 @@ public interface EmployeeMapper {
      * 添加员工
      * @param emp 添加员工
      */
-    void saveEmployee(@Param("emp") PutEmpParam emp);
+    void saveEmployee(@Param("emp") Employee emp);
 
     /**
      * 更新员工
      * @param employee 员工信息
      */
-    void updateEmployee(@Param("emp") PutEmpParam emp);
+    void updateEmployee(@Param("emp") Employee emp);
+
+    /**
+     *
+     */
+    List<Employee> findExportDate();
 }

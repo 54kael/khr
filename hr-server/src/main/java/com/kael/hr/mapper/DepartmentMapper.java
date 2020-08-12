@@ -45,4 +45,11 @@ public interface DepartmentMapper {
      * @param d 需要更新的部门
      */
     void updateDepartment(@Param("d") DeptParam d);
+
+    /**
+     * 根据部门id获取部门名称
+     * @param id 部门id
+     * @return 部门名称
+     */
+    String findDeptNameById(@Param("id") Integer id);
 }

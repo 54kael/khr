@@ -43,4 +43,8 @@
     <update id="updatePosStatue">
         update position set enabled=#{enabled} where id=#{id}
     </update>
+
+    <select id="findPosNameById" resultType="string">
+        select name from position where id = #{id}
+    </select>
 </mapper>

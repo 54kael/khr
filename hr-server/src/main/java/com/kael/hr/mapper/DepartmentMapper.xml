@@ -38,4 +38,8 @@
     <update id="updateDepartment">
         update department set name=#{d.name} where id=#{d.id}
     </update>
+
+    <select id="findDeptNameById" resultType="string">
+        select name from department where id = #{id}
+    </select>
 </mapper>

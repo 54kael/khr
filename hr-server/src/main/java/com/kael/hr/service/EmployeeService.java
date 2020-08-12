@@ -1,8 +1,9 @@
 package com.kael.hr.service;
 
+import com.kael.hr.entity.Employee;
 import com.kael.hr.entity.vo.FindEmployeeCondition;
-import com.kael.hr.entity.vo.PutEmpParam;
 
+import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
@@ -21,11 +22,13 @@ public interface EmployeeService {
      * 添加员工
      * @param employee 员工信息
      */
-    void saveEmployee(PutEmpParam employee);
+    void saveEmployee(Employee employee);
 
     /**
      * 更新员工
      * @param employee 员工信息
      */
-    void updateEmployee(PutEmpParam employee);
+    void updateEmployee(Employee employee);
+
+    List<Employee> findExportDate();
 }
