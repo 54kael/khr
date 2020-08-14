@@ -1,9 +1,8 @@
 package com.kael.hr.controller;
 
-import com.kael.hr.entity.Hr;
-import com.kael.hr.entity.vo.HrLoginParameter;
+import com.kael.hr.entity.User;
 import com.kael.hr.responst.Result;
-import com.kael.hr.service.HrService;
+import com.kael.hr.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -22,26 +21,27 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Api(tags = "用户模块")
 @RestController
-@RequestMapping("/hr")
-public class HrController {
+@RequestMapping("/user")
+public class UserController {
     @Resource
-    HrService hrService;
+    UserService userService;
 
-    @ApiOperation("hr登录")
+    @ApiOperation("用户登录")
     @PostMapping("/login")
-    public Result login(@RequestBody @Validated HrLoginParameter hrLoginParameter) {
-        String token = hrService.login(hrLoginParameter);
+    public Result login(@RequestBody @Validated User user) {
+        String token = userService.login(user);
         return Result.ok().data("token",token);
     }
 
     @ApiOperation("根据username后取用户信息")
     @GetMapping("/info")
-    public Result hrInfo(HttpServletRequest request) {
+    public Result userInfo(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
         if (username==null) {
-            return Result.failure("参数错误");
+            log.error("请求头没有username");
+            return Result.failure("尚未登录");
         }
-        Hr hr = hrService.findHrInfoByUsername(username);
-        return Result.ok().data("hrInfo",hr);
+        User user = userService.findUserInfoByUsername(username);
+        return Result.ok().data("userInfo", user);
     }
 }

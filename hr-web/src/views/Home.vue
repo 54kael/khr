@@ -90,20 +90,18 @@ export default {
               message: "已取消操作",
             });
           });
-      } else if (cmd == "userinfo") {
-        this.$router.push("/hrinfo");
       }
     },
-    getHrInfo() {
-      this.$getRequest("/hr/info").then((resp) => {
-        this.user = resp.data.hrInfo;
+    getUserInfo() {
+      this.$getRequest("/user/info").then((resp) => {
+        this.user = resp.data.userInfo;
       });
     },
   },
 
   mounted() {
     console.log("home页面")
-    this.getHrInfo();
+    this.getUserInfo();
   },
 };
 </script>

@@ -42,13 +42,13 @@ public class AuthenticationInter implements HandlerInterceptor {
 
             String username = claims.getSubject();
             // 从token中得到用户的访问权限列表
-            List<String> hrUrls =(List<String>) claims.get("urls");
+            List<String> userUrls =(List<String>) claims.get("urls");
             // 添加两个只需要登录就可访问的路径
-            hrUrls.add("/menu/**");
-            hrUrls.add("/hr/info/**");
+            userUrls.add("/menu/**");
+            userUrls.add("/user/info/**");
             // 匹配用户的访问权限
             AntPathMatcher antPathMatcher = new AntPathMatcher();
-            for (String hrUrl : hrUrls) {
+            for (String hrUrl : userUrls) {
                 // 权限匹配成功，放行
                 if (antPathMatcher.match(hrUrl,requestUrl)) {
                     request.setAttribute("username",username);
@@ -64,7 +64,7 @@ public class AuthenticationInter implements HandlerInterceptor {
     /**
      * token验证失败
      * @param response 返回json数据
-     * @param statue 状态
+     * @param httpCode 状态码
      */
     private boolean result(HttpServletResponse response,int httpCode) {
         response.setCharacterEncoding("UTF-8");

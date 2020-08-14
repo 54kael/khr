@@ -27,7 +27,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HrApplication.class)
-public class HrApplicationTest {
+public class UserApplicationTest {
     @Autowired
     IgnoreUrlsConfig ignoreUrlsConfig;
 
