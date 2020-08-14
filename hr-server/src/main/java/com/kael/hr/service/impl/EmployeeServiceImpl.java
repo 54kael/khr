@@ -30,14 +30,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     JobLevelMapper jobLevelMapper;
     @Resource
     PositionMapper positionMapper;
-    @Resource
-    NationMapper nationMapper;
-    @Resource
-    PoliticsMapper politicsMapper;
 
     @Override
     public Map<String,Object> findEmpByPageCondition(int currentPage, FindEmployeeCondition cond) {
         int offset = (currentPage-1)*LIMIT;
+        System.out.println(cond);
         List<Employee> employeeList = employeeMapper.findEmpByPageCondition(LIMIT, offset, cond);
         long countEmployeeByCondition = employeeMapper.getCountEmployeeByCondition(cond);
         Map<String,Object> map = new HashMap<>();
@@ -93,8 +90,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Double a = ChronoUnit.DAYS.between(sd,ed)/365.0;
         DecimalFormat df2 = new DecimalFormat("###.00");
         employee.setDepartment(departmentMapper.findDeptNameById(employee.getDepartmentId()));
-        employee.setPolitic(politicsMapper.findPoliticNameById(employee.getPoliticId()));
-        employee.setNation(nationMapper.findNationNameById(employee.getNationId()));
         employee.setJobLevel(jobLevelMapper.findJobLevelNameById(employee.getJobLevelId()));
         employee.setPos(positionMapper.findPosNameById(employee.getPosId()));
         employee.setContractTerm(Double.valueOf(df2.format(a)));
