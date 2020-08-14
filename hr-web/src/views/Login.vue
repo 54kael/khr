@@ -62,7 +62,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$postRequest("/hr/login", this.loginForm).then((resp) => {
+          this.$postRequest("/user/login", this.loginForm).then((resp) => {
               console.log(resp);
             if (resp.code == "00000") {
                 console.log(resp.code);

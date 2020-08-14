@@ -11,13 +11,13 @@
         SELECT
             role.*
         FROM
-            hr
+            user
                 inner join
-            hr_role ON hr.id = hr_role.hr_id
+            user_role ON user.id = user_role.user_id
                 left join
-            role on hr_role.role_id = role.id
+            role on user_role.role_id = role.id
         WHERE
-            hr.username = #{username};
+            user.username = #{username};
     </select>
 
     <select id="findAllRoles" resultMap="roleMap">
@@ -32,7 +32,7 @@
         delete from role where id = #{id}
     </delete>
 
-    <select id="getCountHrByRole" resultType="int">
-        select count(*) from hr_role where role_id = #{id}
+    <select id="getCountUserByRole" resultType="int">
+        select count(*) from user_role where role_id = #{id}
     </select>
 </mapper>
