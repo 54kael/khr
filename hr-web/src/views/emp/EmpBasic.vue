@@ -10,24 +10,24 @@
           <tr>
             <td>民族:</td>
             <td>
-              <el-select v-model="searchCondition.nationId" clearable placeholder="请选择">
+              <el-select v-model="searchCondition.nation" clearable placeholder="请选择">
                 <el-option
                   v-for="nation in nations"
                   :key="nation.id"
                   :label="nation.name"
-                  :value="nation.id"
+                  :value="nation.name"
                 ></el-option>
               </el-select>
             </td>
             <td style="width:30px"></td>
             <td>政治面貌:</td>
             <td>
-              <el-select v-model="searchCondition.politicId" clearable placeholder="请选择">
+              <el-select v-model="searchCondition.politic" clearable placeholder="请选择">
                 <el-option
                   v-for="item in politics"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </td>
@@ -59,13 +59,13 @@
           <tr>
             <td>姓名:</td>
             <td>
-              <el-input v-model="searchCondition.name" placeholder="姓名"></el-input>
+              <el-input clearable v-model="searchCondition.name" placeholder="姓名"></el-input>
             </td>
             <td style="width:30px"></td>
             <td>所属部门:</td>
             <td>
               <el-cascader
-                @change="handleChange"
+                v-model="searchCondition.departmentId"
                 :show-all-levels="false"
                 :options="departments"
                 :props="defaultProps"
@@ -187,18 +187,23 @@
         <el-form-item label="身份证" prop="idCard">
           <el-input v-model="emp.idCard"></el-input>
         </el-form-item>
-        <el-form-item label="政治面貌" prop="politicId">
-          <el-select v-model="emp.politicId" clearable placeholder="请选择">
-            <el-option v-for="item in politics" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        <el-form-item label="政治面貌" prop="politic">
+          <el-select v-model="emp.politic" clearable placeholder="请选择">
+            <el-option
+              v-for="item in politics"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="民族" prop="nationId">
-          <el-select v-model="emp.nationId" clearable placeholder="请选择">
+        <el-form-item label="民族" prop="nation">
+          <el-select v-model="emp.nation" clearable placeholder="请选择">
             <el-option
               v-for="nation in nations"
               :key="nation.id"
               :label="nation.name"
-              :value="nation.id"
+              :value="nation.name"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -250,16 +255,28 @@
           <el-input v-model="emp.specialty"></el-input>
         </el-form-item>
         <el-form-item label="入职日期" prop="beginDate">
-          <el-date-picker value-format="yyyy-MM-dd" v-model="emp.beginDate" type="date" placeholder="选择日期"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="转正日期" prop="conversionTime">
-          <el-date-picker value-format="yyyy-MM-dd" v-model="emp.conversionTime" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            value-format="yyyy-MM-dd"
+            v-model="emp.beginDate"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item label="合同起始日期" prop="beginContract">
-          <el-date-picker value-format="yyyy-MM-dd" v-model="emp.beginContract" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            value-format="yyyy-MM-dd"
+            v-model="emp.beginContract"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item label="合同结束日期" prop="endContract">
-          <el-date-picker value-format="yyyy-MM-dd" v-model="emp.endContract" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            value-format="yyyy-MM-dd"
+            v-model="emp.endContract"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item label="聘用形式" prop="engageForm">
           <el-radio v-model="emp.engageForm" label="劳动合同">劳动合同</el-radio>
@@ -294,12 +311,12 @@ export default {
         wedlock: [
           { required: true, message: "请输入婚姻状况", trigger: "blur" },
         ],
-        nationId: [{ required: true, message: "请输入您组", trigger: "blur" }],
+        nation: [{ required: true, message: "请选择民族", trigger: "blur" }],
         nativePlace: [
           { required: true, message: "请输入籍贯", trigger: "blur" },
         ],
-        politicId: [
-          { required: true, message: "请输入政治面貌", trigger: "blur" },
+        politic: [
+          { required: true, message: "请选择政治面貌", trigger: "blur" },
         ],
         email: [
           { required: true, message: "请输入邮箱地址", trigger: "blur" },
@@ -381,9 +398,9 @@ export default {
         birthday: "",
         idCard: "",
         wedlock: "",
-        nationId: "",
+        nation: "",
         nativePlace: "",
-        politicId: "",
+        politic: "",
         email: "",
         phone: "",
         address: "",
@@ -424,9 +441,9 @@ export default {
         birthday: "",
         idCard: "",
         wedlock: "",
-        nationId: "",
+        nation: "",
         nativePlace: "",
-        politicId: "",
+        politic: "",
         email: "",
         phone: "",
         address: "",

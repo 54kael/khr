@@ -62,23 +62,11 @@ public class Employee {
     @ApiModelProperty("婚姻状况")
     private String wedlock;
 
-    @ColumnWidth(10)
-    @ExcelIgnore
-    @NotNull(message = "民族为空")
-    @ApiModelProperty("民族id")
-    private Integer nationId;
-
     @ColumnWidth(15)
     @ExcelProperty("籍贯")
     @NotNull(message = "籍贯为空")
     @ApiModelProperty("籍贯")
     private String nativePlace;
-
-    @ColumnWidth(12)
-    @ExcelIgnore
-    @NotNull(message = "政治面貌为空")
-    @ApiModelProperty("政治面貌id")
-    private Integer politicId;
 
     @ColumnWidth(25)
     @ExcelProperty("邮箱")
@@ -149,8 +137,7 @@ public class Employee {
     @ColumnWidth(15)
     @ExcelProperty("转正日期")
     @DateTimeFormat("yyyy年MM月dd日")
-    @NotNull(message = "转正日期为空")
-    @ApiModelProperty("转正日期")
+    @ApiModelProperty(value = "转正日期",hidden = true)
     private Date conversionTime;
 
     @ColumnWidth(16)
@@ -176,13 +163,15 @@ public class Employee {
     @ApiModelProperty(hidden = true)
     private Integer id;
 
+    @NotNull(message = "民族为空")
+    @ApiModelProperty("民族")
     @ColumnWidth(12)
-    @ApiModelProperty(hidden = true)
     @ExcelProperty("民族")
     private String nation;
 
+    @NotNull(message = "政治面貌为空")
     @ColumnWidth(15)
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty("政治面貌")
     @ExcelProperty("政治面貌")
     private String politic;
 

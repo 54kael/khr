@@ -65,7 +65,6 @@ public class EmpBasicController {
     @ApiOperation("添加、修改员工信息")
     @PostMapping
     public Result saveEmployee(@RequestBody @Validated Employee employee){
-        System.out.println(employee.getBirthday());
         String workId = employee.getWorkId();
         if (workId==null) {
             log.info("工号为空，添加员工");
