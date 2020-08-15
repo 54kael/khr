@@ -33,6 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     PositionMapper positionMapper;
     @Resource
     AccountMapper accountMapper;
+    @Resource
+    RoleMapper roleMapper;
 
     @Override
     public Map<String,Object> findEmpByPageCondition(int currentPage, FindEmployeeCondition cond) {
@@ -73,6 +75,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         account.setName(employee.getName());
         account.setWorkId(workId);
         accountMapper.saveAccount(account);
+
+        // 保存员工角色
+        roleMapper.saveAccountRole(account.getId(),employee.getRoleIds());
     }
 
     @Transactional

@@ -35,11 +35,17 @@ public interface RoleMapper {
     void deleteRole(@Param("id") Integer id);
 
     /**
-     * 查找该角色下 hr 人数
+     * 查找该角色下 账号 人数
      * @param id 角色id
-     * @return 使用该角色的hr
+     * @return 使用该角色的账号
      */
     int getCountAccountByRole(@Param("id") Integer id);
 
+    /**
+     * 保存账号的角色
+     * @param accountId 账号id
+     * @param roleIds 账号角色列表
+     */
+    void saveAccountRole(@Param("accountId")Integer accountId, @Param("roleIds") List<Integer> roleIds);
 
 }

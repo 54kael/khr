@@ -282,6 +282,19 @@
           <el-radio v-model="emp.engageForm" label="劳动合同">劳动合同</el-radio>
           <el-radio v-model="emp.engageForm" label="劳务合同">劳务合同</el-radio>
         </el-form-item>
+        <el-form-item label="账号" prop="username">
+          <el-input v-model="emp.username"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop="roles">
+          <el-select v-model="emp.roleIds" multiple placeholder="请选择">
+            <el-option
+              v-for="item in roles"
+              :key="item.id"
+              :label="item.nameZh"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -392,6 +405,7 @@ export default {
       departments: [],
       jobLevels: [],
       searchCondition: {},
+      roles:{},
       emp: {
         name: "",
         gender: "",
@@ -496,6 +510,7 @@ export default {
     showAddEmpView() {
       this.title = "添加员工";
       this.dialogVisible = true;
+      this.getRoles();
     },
     handleChange(value) {
       this.searchCondition.departmentId = value[value.length - 1];
@@ -544,6 +559,13 @@ export default {
         }
       });
     },
+    getRoles(){
+      this.$getRequest("/system/basic/permission").then(resp => {
+        if(resp.code="00000") {
+          this.roles = resp.data.allRoles;
+        }
+      })
+    }
   },
   mounted() {
     this.initBaseInfo();

@@ -24,7 +24,7 @@
             username=#{username}
     </select>
 
-    <insert id="saveAccount">
+    <insert id="saveAccount" useGeneratedKeys="true" keyProperty="id">
         insert into
             account (username,password,name,work_id)
         value (

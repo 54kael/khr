@@ -34,6 +34,12 @@
 
     <select id="getCountAccountByRole" resultType="int">
         select count(*) from account_role where role_id = #{id}
-
     </select>
+
+    <insert id="saveAccountRole">
+        insert into account_role (account_id, role_id) value
+        <foreach collection="roleIds" separator="," item="roleId">
+            (#{accountId}, #{roleId})
+        </foreach>
+    </insert>
 </mapper>
