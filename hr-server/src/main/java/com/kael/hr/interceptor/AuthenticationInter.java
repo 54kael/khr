@@ -60,7 +60,6 @@ public class AuthenticationInter implements HandlerInterceptor {
             return result(response,HttpServletResponse.SC_FORBIDDEN);
         }
     }
-
     /**
      * token验证失败
      * @param response 返回json数据

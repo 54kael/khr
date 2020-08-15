@@ -1,6 +1,6 @@
 package com.kael.hr.controller;
 
-import com.kael.hr.entity.User;
+import com.kael.hr.entity.Account;
 import com.kael.hr.responst.Result;
 import com.kael.hr.service.UserService;
 import io.swagger.annotations.Api;
@@ -28,8 +28,8 @@ public class UserController {
 
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public Result login(@RequestBody @Validated User user) {
-        String token = userService.login(user);
+    public Result login(@RequestBody @Validated Account account) {
+        String token = userService.login(account.getUsername(),account.getPassword());
         return Result.ok().data("token",token);
     }
 
@@ -41,7 +41,7 @@ public class UserController {
             log.error("请求头没有username");
             return Result.failure("尚未登录");
         }
-        User user = userService.findUserInfoByUsername(username);
-        return Result.ok().data("userInfo", user);
+        Account hr = userService.findAccountByUsername(username);
+        return Result.ok().data("userInfo",hr);
     }
 }

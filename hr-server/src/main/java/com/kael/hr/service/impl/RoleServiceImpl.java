@@ -44,7 +44,9 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public void deleteRole(Integer id) {
-        int hrCount = roleMapper.getCountUserByRole(id);
+
+        int hrCount = roleMapper.getCountAccountByRole(id);
+
         if (hrCount>0) {
             throw new HrException("该角色下还有关联账号");
         }

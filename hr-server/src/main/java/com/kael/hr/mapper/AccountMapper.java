@@ -1,9 +1,9 @@
 package com.kael.hr.mapper;
 
-import com.kael.hr.entity.User;
+import com.kael.hr.entity.Account;
 import org.apache.ibatis.annotations.Param;
 
-public interface UserMapper {
+public interface AccountMapper {
     /**
      * 根据 username 查找密码
      * @param username 用户名
@@ -16,6 +16,11 @@ public interface UserMapper {
      * @param username 用户名
      * @return user全部信息
      */
-    User findUserByUsername(@Param("username") String username);
+    Account findAccountByUsername(@Param("username") String username);
 
+    /**
+     * 添加账号
+     * @param account 账号
+     */
+    void saveAccount(@Param("account") Account account);
 }

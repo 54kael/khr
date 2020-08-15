@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kael.hr.mapper.UserMapper">
-    <resultMap id="userMap" type="com.kael.hr.entity.User">
+<mapper namespace="com.kael.hr.mapper.AccountMapper">
+    <resultMap id="userMap" type="com.kael.hr.entity.Account">
         <id column="id" property="id" />
         <result column="name" property="name" />
-        <result column="phone" property="phone" />
-        <result column="telephone" property="telephone" />
-        <result column="address" property="address" />
         <result column="enabled" property="enabled" />
         <result column="username" property="username" />
         <result column="password" property="password" />
-        <result column="user_face" property="userFace" />
-        <result column="remark" property="remark" />
     </resultMap>
 
     <select id="findPasswordByUsername" resultType="string">
-        select password from user where enabled=1 and username=#{username}
+        select password from account where enabled=1 and username=#{username}
     </select>
 
-    <select id="findUserByUsername" resultMap="userMap">
+    <select id="findAccountByUsername" resultMap="userMap">
         select
-            id,name,username,user_face,work_id
+            id,name,username,password
         from
-            user
+            account
         where
             enabled=1
         and
             username=#{username}
     </select>
+
+    <insert id="saveAccount">
+        insert into
+            account (username,password,name,work_id)
+        value (
+            #{account.username},#{account.password},#{account.name},#{account.workId})
+    </insert>
 
 </mapper>

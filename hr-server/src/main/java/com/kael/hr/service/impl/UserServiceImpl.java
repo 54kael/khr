@@ -1,10 +1,10 @@
 package com.kael.hr.service.impl;
 
-import com.kael.hr.entity.User;
+import com.kael.hr.entity.Account;
 import com.kael.hr.entity.Menu;
 import com.kael.hr.entity.Role;
 import com.kael.hr.exception.HrException;
-import com.kael.hr.mapper.UserMapper;
+import com.kael.hr.mapper.AccountMapper;
 import com.kael.hr.mapper.MenuMapper;
 import com.kael.hr.mapper.RoleMapper;
 import com.kael.hr.service.UserService;
@@ -24,21 +24,21 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Resource
-    UserMapper userMapper;
+
+    AccountMapper hrMapper;
+
     @Resource
     MenuMapper menuMapper;
     @Resource
     RoleMapper roleMapper;
 
     @Override
-    public String login(User user) {
-        String loginPassword = user.getPassword();
-        String username = user.getUsername();
-        String password = userMapper.findPasswordByUsername(username);
+    public String login(String username, String password) {
+        String accountPassword = hrMapper.findPasswordByUsername(username);
         if (password==null) {
             throw new HrException("用户不存在");
         }
-        if (!PasswordEncrypted.encrypted(loginPassword).equals(password)) {
+        if (!PasswordEncrypted.encrypted(password).equals(accountPassword)) {
             throw new HrException("用户名或者密码错误");
         }
 
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserInfoByUsername(String username) {
-        return userMapper.findUserByUsername(username);
+    public Account findAccountByUsername(String username) {
+        return hrMapper.findAccountByUsername(username);
     }
 }

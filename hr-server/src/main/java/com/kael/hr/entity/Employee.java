@@ -15,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author kael
@@ -194,4 +195,10 @@ public class Employee {
     @ApiModelProperty(hidden = true)
     @ExcelProperty("在职状态")
     private String workState;
+
+    @ApiModelProperty("账号用户名")
+    private String username;
+
+    @ApiModelProperty("员工角色")
+    private List<Integer> roleIds;
 }
