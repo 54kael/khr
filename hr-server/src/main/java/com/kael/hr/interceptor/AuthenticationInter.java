@@ -45,7 +45,7 @@ public class AuthenticationInter implements HandlerInterceptor {
             List<String> hrUrls =(List<String>) claims.get("urls");
             // 添加两个只需要登录就可访问的路径
             hrUrls.add("/menu/**");
-            hrUrls.add("/hr/info/**");
+            hrUrls.add("/user/info/**");
             // 匹配用户的访问权限
             AntPathMatcher antPathMatcher = new AntPathMatcher();
             for (String hrUrl : hrUrls) {
@@ -60,7 +60,6 @@ public class AuthenticationInter implements HandlerInterceptor {
             return result(response,HttpServletResponse.SC_FORBIDDEN);
         }
     }
-
     /**
      * token验证失败
      * @param response 返回json数据

@@ -39,6 +39,6 @@ public interface RoleMapper {
      * @param id 角色id
      * @return 使用该角色的hr
      */
-    int getCountHrByRole(@Param("id") Integer id);
+    int getCountAccountByRole(@Param("id") Integer id);
 
 }

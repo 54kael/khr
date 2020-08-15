@@ -1,15 +1,16 @@
 package com.kael.hr.service.impl;
 
+import com.kael.hr.entity.Account;
 import com.kael.hr.entity.Employee;
 import com.kael.hr.entity.vo.FindEmployeeCondition;
 import com.kael.hr.mapper.*;
 import com.kael.hr.service.EmployeeService;
+import com.kael.hr.util.PasswordEncrypted;
 import com.kael.hr.util.WorkIdPrefix;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +31,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     JobLevelMapper jobLevelMapper;
     @Resource
     PositionMapper positionMapper;
+    @Resource
+    AccountMapper accountMapper;
 
     @Override
     public Map<String,Object> findEmpByPageCondition(int currentPage, FindEmployeeCondition cond) {
@@ -61,8 +64,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setWorkId(workId);
 
         Employee employee1 = redundantFieldAssignment(employee);
-        System.out.println(employee1);
         employeeMapper.saveEmployee(employee1);
+
+        // 添加员工账号
+        Account account = new Account();
+        account.setUsername(employee.getUsername());
+        account.setPassword(PasswordEncrypted.encrypted("123456"));
+        account.setName(employee.getName());
+        account.setWorkId(workId);
+        accountMapper.saveAccount(account);
     }
 
     @Transactional

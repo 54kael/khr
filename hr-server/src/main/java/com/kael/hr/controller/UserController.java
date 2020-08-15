@@ -1,9 +1,8 @@
 package com.kael.hr.controller;
 
-import com.kael.hr.entity.Hr;
-import com.kael.hr.entity.vo.HrLoginParameter;
+import com.kael.hr.entity.Account;
 import com.kael.hr.responst.Result;
-import com.kael.hr.service.HrService;
+import com.kael.hr.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +21,15 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Api(tags = "用户模块")
 @RestController
-@RequestMapping("/hr")
-public class HrController {
+@RequestMapping("/user")
+public class UserController {
     @Resource
-    HrService hrService;
+    UserService userService;
 
-    @ApiOperation("hr登录")
+    @ApiOperation("用户登录")
     @PostMapping("/login")
-    public Result login(@RequestBody @Validated HrLoginParameter hrLoginParameter) {
-        String token = hrService.login(hrLoginParameter);
+    public Result login(@RequestBody @Validated Account account) {
+        String token = userService.login(account.getUsername(),account.getPassword());
         return Result.ok().data("token",token);
     }
 
@@ -41,7 +40,7 @@ public class HrController {
         if (username==null) {
             return Result.failure("参数错误");
         }
-        Hr hr = hrService.findHrInfoByUsername(username);
-        return Result.ok().data("hrInfo",hr);
+        Account hr = userService.findAccountByUsername(username);
+        return Result.ok().data("userInfo",hr);
     }
 }

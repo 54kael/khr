@@ -1,14 +1,13 @@
 package com.kael.hr.service.impl;
 
-import com.kael.hr.entity.Hr;
+import com.kael.hr.entity.Account;
 import com.kael.hr.entity.Menu;
 import com.kael.hr.entity.Role;
-import com.kael.hr.entity.vo.HrLoginParameter;
 import com.kael.hr.exception.HrException;
-import com.kael.hr.mapper.HrMapper;
+import com.kael.hr.mapper.AccountMapper;
 import com.kael.hr.mapper.MenuMapper;
 import com.kael.hr.mapper.RoleMapper;
-import com.kael.hr.service.HrService;
+import com.kael.hr.service.UserService;
 import com.kael.hr.util.JwtUtil;
 import com.kael.hr.util.PasswordEncrypted;
 import org.springframework.stereotype.Service;
@@ -23,23 +22,21 @@ import java.util.List;
  */
 
 @Service
-public class HrServiceImpl implements HrService {
+public class UserServiceImpl implements UserService {
     @Resource
-    HrMapper hrMapper;
+    AccountMapper hrMapper;
     @Resource
     MenuMapper menuMapper;
     @Resource
     RoleMapper roleMapper;
 
     @Override
-    public String login(HrLoginParameter hrLoginParameter) {
-        String loginPassword = hrLoginParameter.getPassword();
-        String username = hrLoginParameter.getUsername();
-        String password = hrMapper.findPasswordByUsername(username);
+    public String login(String username, String password) {
+        String accountPassword = hrMapper.findPasswordByUsername(username);
         if (password==null) {
             throw new HrException("用户不存在");
         }
-        if (!PasswordEncrypted.encrypted(loginPassword).equals(password)) {
+        if (!PasswordEncrypted.encrypted(password).equals(accountPassword)) {
             throw new HrException("用户名或者密码错误");
         }
 
@@ -49,7 +46,7 @@ public class HrServiceImpl implements HrService {
     }
 
     @Override
-    public Hr findHrInfoByUsername(String username) {
-        return hrMapper.findHrByUsername(username);
+    public Account findAccountByUsername(String username) {
+        return hrMapper.findAccountByUsername(username);
     }
 }
