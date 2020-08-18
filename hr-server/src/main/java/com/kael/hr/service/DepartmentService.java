@@ -1,5 +1,6 @@
 package com.kael.hr.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.Department;
 import com.kael.hr.entity.vo.DeptParam;
 
@@ -10,7 +11,7 @@ public interface DepartmentService {
      * 根据父级id获取所有子部门
      * @return 所有的部门
      */
-    List<Department> findAllDepartmentsByParentId(Integer id);
+    List<Department> findAllDepartmentsByParentId(Integer id) throws JsonProcessingException;
 
     /**
      * 添加部门

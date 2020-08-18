@@ -39,6 +39,14 @@
                 :key="indexj"
               >{{child.name}}</el-menu-item>
             </el-submenu>
+            <el-submenu>
+              <template slot="title">
+                <span>聊天测试</span>
+              </template>
+              <el-menu-item index="/chat">
+                聊天
+              </el-menu-item>
+            </el-submenu>
           </el-menu>
         </el-aside>
         <el-main>

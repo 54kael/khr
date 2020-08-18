@@ -1,5 +1,7 @@
 package com.kael.hr.controller.emp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kael.hr.entity.*;
 import com.kael.hr.entity.vo.FindEmployeeCondition;
 import com.kael.hr.responst.Result;
@@ -7,6 +9,7 @@ import com.kael.hr.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +29,8 @@ import java.util.Map;
 @RequestMapping("/employee/basic")
 public class EmpBasicController {
     @Resource
+    StringRedisTemplate stringRedisTemplate;
+    @Resource
     EmployeeService employeeServiceImpl;
     @Resource
     NationService nationServiceImpl;
@@ -40,7 +45,7 @@ public class EmpBasicController {
 
     @ApiOperation("基本信息选项初始化")
     @GetMapping("/basicInfo")
-    public Result initEmpBasicInfo(){
+    public Result initEmpBasicInfo() throws JsonProcessingException {
         List<Nation> nations = nationServiceImpl.getAllNations();
         List<Politics> politics = politicsServiceImpl.getAllPolitics();
         List<Position> positions = positionServiceImpl.findAllPositions();

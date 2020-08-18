@@ -39,7 +39,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Map<String,Object> findEmpByPageCondition(int currentPage, FindEmployeeCondition cond) {
         int offset = (currentPage-1)*LIMIT;
-        System.out.println(cond);
         List<Employee> employeeList = employeeMapper.findEmpByPageCondition(LIMIT, offset, cond);
         long countEmployeeByCondition = employeeMapper.getCountEmployeeByCondition(cond);
         Map<String,Object> map = new HashMap<>();

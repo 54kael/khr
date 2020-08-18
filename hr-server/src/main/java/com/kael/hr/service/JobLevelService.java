@@ -1,5 +1,6 @@
 package com.kael.hr.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.JobLevel;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface JobLevelService {
      * 获取所有职称
      * @return 所有职称
      */
-    List<JobLevel> findAllJobLevels();
+    List<JobLevel> findAllJobLevels() throws JsonProcessingException;
 
     /**
      * 添加职称

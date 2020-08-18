@@ -1,5 +1,6 @@
 package com.kael.hr.controller.system.basic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.Menu;
 import com.kael.hr.entity.Role;
 import com.kael.hr.responst.Result;
@@ -53,7 +54,7 @@ public class PermissionController {
 
     @ApiOperation("获取所有菜单")
     @GetMapping("/menus")
-    public Result getAllMenus() {
+    public Result getAllMenus() throws JsonProcessingException {
         List<Menu> menus = menuServiceImpl.findAllMenusIdAndName();
         return Result.ok().data("menus",menus);
     }

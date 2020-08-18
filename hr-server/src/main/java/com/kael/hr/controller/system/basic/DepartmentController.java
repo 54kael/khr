@@ -1,5 +1,6 @@
 package com.kael.hr.controller.system.basic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.Department;
 import com.kael.hr.entity.vo.DeptParam;
 import com.kael.hr.responst.Result;
@@ -29,7 +30,7 @@ public class DepartmentController {
 
     @ApiOperation("根据父级id查找子部门")
     @GetMapping("/{parentId}")
-    public Result getDepartmentsByParentId(@PathVariable("parentId")Integer parentId){
+    public Result getDepartmentsByParentId(@PathVariable("parentId")Integer parentId) throws JsonProcessingException {
         List<Department> departmentList = departmentService.findAllDepartmentsByParentId(parentId);
         return Result.ok().data("departments",departmentList);
     }

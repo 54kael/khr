@@ -1,5 +1,6 @@
 package com.kael.hr.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.Position;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface PositionService {
      * 获取所有职位
      * @return 所有职位列表
      */
-    List<Position> findAllPositions();
+    List<Position> findAllPositions() throws JsonProcessingException;
 
     /**
      * 保存职位

@@ -1,10 +1,13 @@
 package com.kael.hr.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kael.hr.entity.JobLevel;
 import com.kael.hr.exception.HrException;
 import com.kael.hr.mapper.JobLevelMapper;
 import com.kael.hr.service.JobLevelService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,12 +22,25 @@ import java.util.List;
 @Slf4j
 @Service
 public class JobLevelServiceImpl implements JobLevelService {
-
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
     @Resource
     JobLevelMapper jobLevelMapper;
     @Override
-    public List<JobLevel> findAllJobLevels() {
-        return jobLevelMapper.findAllJobLevels(null);
+    public List<JobLevel> findAllJobLevels() throws JsonProcessingException {
+        List<JobLevel> allJobLevels;
+        ObjectMapper objectMapper = new ObjectMapper();
+        String s = stringRedisTemplate.opsForValue().get("khr:allJobLevels");
+        if (s==null || "".equals(s)) {
+            log.info("职称redis缓存为空");
+            allJobLevels = jobLevelMapper.findAllJobLevels(null);
+            stringRedisTemplate.opsForValue().set("khr:allJobLevels",objectMapper.writeValueAsString(allJobLevels));
+            return allJobLevels;
+        } else {
+            log.info("职称redis缓存不为空");
+            return objectMapper.readValue(s,List.class);
+        }
+
     }
 
     @Override
@@ -43,6 +59,7 @@ public class JobLevelServiceImpl implements JobLevelService {
         Date date = new Date();
         jobLevel.setCreateDate(date);
         jobLevelMapper.saveJobLevel(jobLevel);
+        stringRedisTemplate.delete("khr:allJobLevels");
     }
 
     @Override
@@ -57,6 +74,7 @@ public class JobLevelServiceImpl implements JobLevelService {
             }
         }
         jobLevelMapper.updateJobLevel(jobLevel);
+        stringRedisTemplate.delete("khr:allJobLevels");
     }
 
     @Override
@@ -67,5 +85,6 @@ public class JobLevelServiceImpl implements JobLevelService {
             throw new HrException("还有员工使用该职称");
         }
         jobLevelMapper.deletedJobLevel(id);
+        stringRedisTemplate.delete("khr:allJobLevels");
     }
 }

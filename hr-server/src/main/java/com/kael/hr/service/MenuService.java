@@ -1,5 +1,6 @@
 package com.kael.hr.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.Menu;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface MenuService {
     /**
      * 查找所有菜单的id和name
      */
-    List<Menu> findAllMenusIdAndName();
+    List<Menu> findAllMenusIdAndName() throws JsonProcessingException;
 
     /**
      * 根据角色id获取所有菜单id

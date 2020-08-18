@@ -1,5 +1,6 @@
 package com.kael.hr.controller.system.basic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.Position;
 import com.kael.hr.exception.HrException;
 import com.kael.hr.responst.Result;
@@ -28,7 +29,7 @@ public class PositionController {
 
     @ApiOperation("获取所有职位")
     @GetMapping
-    public Result getAllPosition() {
+    public Result getAllPosition() throws JsonProcessingException {
         List<Position> positionList = positionServiceImpl.findAllPositions();
         return Result.ok().data("positions",positionList);
     }

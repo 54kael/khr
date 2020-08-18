@@ -28,3 +28,5 @@ secure:
       - /minio/upload
       - /error
       - /user/login
+      - /hello
+      - /gs-guide-websocket

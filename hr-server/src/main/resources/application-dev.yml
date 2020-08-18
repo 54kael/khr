@@ -4,3 +4,14 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3306/khr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+
+  redis:
+    database: 0
+    host: 120.24.28.194
+    port: 6379
+    password: Zwlykszb@@123
+    pool:
+      max-active: 8
+      max-wait: 1
+      max-idle: 8
+      min-idle: 0

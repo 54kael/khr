@@ -1,5 +1,6 @@
 package com.kael.hr.controller.system.basic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kael.hr.entity.JobLevel;
 import com.kael.hr.responst.Result;
 import com.kael.hr.service.JobLevelService;
@@ -27,7 +28,7 @@ public class JobLevelController {
 
     @ApiOperation("获取所有职位")
     @GetMapping
-    public Result getAllJobLevels(){
+    public Result getAllJobLevels() throws JsonProcessingException {
         List<JobLevel> jobLevels = jobLevelServiceImpl.findAllJobLevels();
         return Result.ok().data("jobLevels",jobLevels);
     }
